@@ -11,44 +11,49 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users")
+@Table(name = "events")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class Event {
 
 	@Id
 	@Column(name = "id", updatable = false, nullable = false)
+	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
 	@Column(name = "name", nullable = false)
 	private String name;
 
-	@Column(name = "email", nullable = false)
-	private String email;
+	@Column(name = "start")
+	private LocalDateTime start;
 
-	//todo organized events
-	@OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL)
-	private List<Event> organizeEvents =  new ArrayList<>();
+	@Column(name = "end")
+	private LocalDateTime end;
 
-	//todo attending events
-	@ManyToMany
-	@JoinTable(
-					name = "user_attending_events",
-					joinColumns = @JoinColumn(name = "user_id"),
-					inverseJoinColumns = @JoinColumn(name = "event_id")
-	)
-	private List<Event> attendingEvents =  new ArrayList<>();
+	@Column(name = "venue", nullable = false)
+	private String venue;
 
-	//todo staffing events
-	@ManyToMany
-	@JoinTable(
-					name = "user_staffing_events",
-					joinColumns = @JoinColumn(name = "user_id"),
-					inverseJoinColumns = @JoinColumn(name = "event_id")
-	)
+	@Column(name = "sales_start")
+	private LocalDateTime salesStart;
+
+	@Column(name = "sales_end")
+	private LocalDateTime salesEnd;
+
+	@Column(name = "status", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private EventStatusEnum status;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "organizer_id")
+	private User organizer;
+
+	@ManyToMany(mappedBy = "attendingEvents")
+	private List<User> attendees = new ArrayList<>();
+
+	@ManyToMany(mappedBy = "staffingEvents")
 	private List<User> staff = new ArrayList<>();
 
 	@CreatedDate
@@ -58,4 +63,5 @@ public class User {
 	@LastModifiedDate
 	@Column(name = "updated_at", nullable = false)
 	private LocalDateTime updatedAt;
+
 }
