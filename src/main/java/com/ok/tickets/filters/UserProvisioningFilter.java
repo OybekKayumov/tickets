@@ -17,10 +17,12 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Component
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class UserProvisioningFilter  extends OncePerRequestFilter {
 
 	private final UserRepo userRepo;
+
+	public UserProvisioningFilter(UserRepo userRepo) {this.userRepo = userRepo;}
 
 	@Override
 	protected void doFilterInternal(
