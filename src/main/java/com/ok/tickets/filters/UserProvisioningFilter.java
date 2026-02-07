@@ -1,12 +1,11 @@
 package com.ok.tickets.filters;
 
-import com.ok.tickets.domain.User;
+import com.ok.tickets.domain.enteties.User;
 import com.ok.tickets.repos.UserRepo;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;

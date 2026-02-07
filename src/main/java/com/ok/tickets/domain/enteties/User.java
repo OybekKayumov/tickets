@@ -1,4 +1,4 @@
-package com.ok.tickets.domain;
+package com.ok.tickets.domain.enteties;
 
 import jakarta.persistence.*;
 import lombok.*;

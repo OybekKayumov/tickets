@@ -1,4 +1,4 @@
-package com.ok.tickets.domain;
+package com.ok.tickets.domain.enteties;
 
 public enum TicketValidationStatusEnum {
 
