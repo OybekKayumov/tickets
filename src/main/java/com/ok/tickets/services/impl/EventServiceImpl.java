@@ -5,6 +5,7 @@ import com.ok.tickets.domain.enteties.Event;
 import com.ok.tickets.domain.enteties.TicketType;
 import com.ok.tickets.domain.enteties.User;
 import com.ok.tickets.exceptions.UserNotFoundException;
+import com.ok.tickets.repos.EventRepo;
 import com.ok.tickets.repos.UserRepo;
 import com.ok.tickets.services.EventService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.UUID;
 public class EventServiceImpl implements EventService {
 
 	private final UserRepo userRepo;
+	private final EventRepo eventRepo;
 
 	@Override
 	public Event createEvent(UUID organizerId, CreateEventRequest event) throws UserNotFoundException {
@@ -49,6 +51,7 @@ public class EventServiceImpl implements EventService {
 		eventToCreate.setOrganizer(organizer);
 		eventToCreate.setTicketTypes(ticketTypesToCreate);
 
-		return null;
+		return eventRepo.save(eventToCreate);
+
 	}
 }
