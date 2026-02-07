@@ -9,3 +9,8 @@
 `
 
 ###  add mapstruct
+
+### mvn
+    - Lifecycle
+        - clean
+        - compile -> Run Maven Build
