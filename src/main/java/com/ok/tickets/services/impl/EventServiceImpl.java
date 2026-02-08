@@ -9,6 +9,8 @@ import com.ok.tickets.repos.EventRepo;
 import com.ok.tickets.repos.UserRepo;
 import com.ok.tickets.services.EventService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,6 +55,13 @@ public class EventServiceImpl implements EventService {
 		eventToCreate.setTicketTypes(ticketTypesToCreate);
 
 		return eventRepo.save(eventToCreate);
+
+	}
+
+	@Override
+	public Page<Event> listEventsForOrganizer(UUID organizerId, Pageable pageable) {
+
+		return eventRepo.findByOrganizerId(organizerId, pageable);
 
 	}
 }
