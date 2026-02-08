@@ -1,6 +1,7 @@
 package com.ok.tickets.services;
 
 import com.ok.tickets.domain.CreateEventRequest;
+import com.ok.tickets.domain.UpdateEventRequest;
 import com.ok.tickets.domain.enteties.Event;
 import com.ok.tickets.exceptions.UserNotFoundException;
 import org.springframework.data.domain.Page;
@@ -17,4 +18,7 @@ public interface EventService {
 	Page<Event> listEventsForOrganizer(UUID organizerId,  Pageable pageable);
 
 	Optional<Event> getEventForOrganizer(UUID organizerId, UUID id);
+
+	Event updateEventForOrganizer(UUID organizerId, UUID id,
+	                        UpdateEventRequest event);
 }
