@@ -3,6 +3,7 @@ package com.ok.tickets.controller;
 import com.ok.tickets.domain.CreateEventRequest;
 import com.ok.tickets.domain.dto.CreateEventRequestDto;
 import com.ok.tickets.domain.dto.CreateEventResponseDto;
+import com.ok.tickets.domain.dto.GetEventDetailsResponseDto;
 import com.ok.tickets.domain.dto.ListEventResponseDto;
 import com.ok.tickets.domain.enteties.Event;
 import com.ok.tickets.exceptions.UserNotFoundException;
@@ -55,6 +56,20 @@ public class EventController {
 		Page<Event> events = eventService.listEventsForOrganizer(userId, pageable);
 
 		return ResponseEntity.ok(events.map(eventMapper::toListEventResponseDto));
+
+	}
+
+	@GetMapping(path = "/{eventId}")
+	public ResponseEntity<GetEventDetailsResponseDto> getEvent(
+					@AuthenticationPrincipal Jwt jwt,
+					@PathVariable UUID eventId) {
+
+		UUID userId = parseUserId(jwt);
+
+		return eventService.getEventForOrganizer(userId, eventId)
+						.map(eventMapper::toGetEventDetailsResponseDto)
+						.map(ResponseEntity::ok)
+						.orElse(ResponseEntity.notFound().build());
 
 	}
 
