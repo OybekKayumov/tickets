@@ -3,6 +3,9 @@ package com.ok.tickets.services;
 import com.ok.tickets.domain.CreateEventRequest;
 import com.ok.tickets.domain.UpdateEventRequest;
 import com.ok.tickets.domain.enteties.Event;
+import com.ok.tickets.exceptions.EventNotFoundException;
+import com.ok.tickets.exceptions.EventUpdateException;
+import com.ok.tickets.exceptions.TicketTypeNotFoundException;
 import com.ok.tickets.exceptions.UserNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,5 +23,5 @@ public interface EventService {
 	Optional<Event> getEventForOrganizer(UUID organizerId, UUID id);
 
 	Event updateEventForOrganizer(UUID organizerId, UUID id,
-	                        UpdateEventRequest event);
+	                        UpdateEventRequest event) throws EventUpdateException, EventNotFoundException, TicketTypeNotFoundException;
 }
