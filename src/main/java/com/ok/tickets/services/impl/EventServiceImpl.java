@@ -4,6 +4,7 @@ import com.ok.tickets.domain.CreateEventRequest;
 import com.ok.tickets.domain.UpdateEventRequest;
 import com.ok.tickets.domain.UpdateTicketTypeRequest;
 import com.ok.tickets.domain.enteties.Event;
+import com.ok.tickets.domain.enteties.EventStatusEnum;
 import com.ok.tickets.domain.enteties.TicketType;
 import com.ok.tickets.domain.enteties.User;
 import com.ok.tickets.exceptions.EventNotFoundException;
@@ -155,6 +156,13 @@ public class EventServiceImpl implements EventService {
 	public void deleteEventForOrganizer(UUID organizerId, UUID id) {
 
 		getEventForOrganizer(organizerId, id).ifPresent(eventRepo::delete);
+	}
+
+	@Override
+	public Page<Event> listPublishedEvents(Pageable pageable) {
+
+		return eventRepo.findByStatus(EventStatusEnum.PUBLISHED, pageable);
+
 	}
 
 }

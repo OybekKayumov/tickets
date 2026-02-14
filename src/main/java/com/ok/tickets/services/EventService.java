@@ -26,4 +26,6 @@ public interface EventService {
 	                        UpdateEventRequest event) throws EventUpdateException, EventNotFoundException, TicketTypeNotFoundException;
 
 	void deleteEventForOrganizer(UUID organizerId, UUID id);
+
+	Page<Event> listPublishedEvents(Pageable pageable);
 }
