@@ -1,10 +1,7 @@
 package com.ok.tickets.controller;
 
 import com.ok.tickets.domain.dto.ErrorDto;
-import com.ok.tickets.exceptions.EventNotFoundException;
-import com.ok.tickets.exceptions.EventUpdateException;
-import com.ok.tickets.exceptions.TicketTypeNotFoundException;
-import com.ok.tickets.exceptions.UserNotFoundException;
+import com.ok.tickets.exceptions.*;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -58,6 +55,16 @@ public class GlobalExceptionHandler {
 		ErrorDto errorDto = new ErrorDto();
 		errorDto.setError("Unable to update event");
 		return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+
+	}
+
+	@ExceptionHandler(QrCodeGenerationException.class)
+	public ResponseEntity<ErrorDto> handleQrCodeGenerationException(QrCodeGenerationException ex) {
+
+		log.error("Caught QrCodeGenerationException", ex);
+		ErrorDto errorDto = new ErrorDto();
+		errorDto.setError("Unable to generate QR Code");
+		return new ResponseEntity<>(errorDto, HttpStatus.INTERNAL_SERVER_ERROR);
 
 	}
 
