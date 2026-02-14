@@ -1,11 +1,12 @@
 package com.ok.tickets.controller;
 
 import com.ok.tickets.domain.CreateEventRequest;
-import com.ok.tickets.domain.dto.CreateEventRequestDto;
-import com.ok.tickets.domain.dto.CreateEventResponseDto;
-import com.ok.tickets.domain.dto.GetEventDetailsResponseDto;
-import com.ok.tickets.domain.dto.ListEventResponseDto;
+import com.ok.tickets.domain.UpdateEventRequest;
+import com.ok.tickets.domain.dto.*;
 import com.ok.tickets.domain.enteties.Event;
+import com.ok.tickets.exceptions.EventNotFoundException;
+import com.ok.tickets.exceptions.EventUpdateException;
+import com.ok.tickets.exceptions.TicketTypeNotFoundException;
 import com.ok.tickets.exceptions.UserNotFoundException;
 import com.ok.tickets.mappers.EventMapper;
 import com.ok.tickets.services.EventService;
@@ -47,6 +48,28 @@ public class EventController {
 
 	}
 
+	@PutMapping(path = "/{eventId}")
+	public ResponseEntity<UpdateEventResponseDto> updateEvent(
+					@AuthenticationPrincipal Jwt jwt,
+					@PathVariable UUID eventId,
+					@Valid @RequestBody UpdateEventRequestDto updateEventRequestDto) throws UserNotFoundException, EventUpdateException, TicketTypeNotFoundException, EventNotFoundException {
+
+		UpdateEventRequest updateEventRequest =
+						eventMapper.fromDto(updateEventRequestDto);
+
+		//UUID userId = UUID.fromString(jwt.getSubject());
+		UUID userId = parseUserId(jwt);
+
+		Event updatedEvent = eventService.updateEventForOrganizer(
+						userId, eventId, updateEventRequest);
+
+		UpdateEventResponseDto updateEventResponseDto =
+						eventMapper.toUpdateEventResponseDto(updatedEvent);
+
+		return ResponseEntity.ok(updateEventResponseDto);
+
+	}
+
 	@GetMapping
 	public ResponseEntity<Page<ListEventResponseDto>> listEvents(
 					@AuthenticationPrincipal Jwt jwt,
@@ -70,6 +93,19 @@ public class EventController {
 						.map(eventMapper::toGetEventDetailsResponseDto)
 						.map(ResponseEntity::ok)
 						.orElse(ResponseEntity.notFound().build());
+
+	}
+
+	@DeleteMapping(path = "/{eventId}")
+	public ResponseEntity<Void> deleteEvent(
+					@AuthenticationPrincipal Jwt jwt,
+					@PathVariable UUID eventId) {
+
+		UUID userId = parseUserId(jwt);
+
+		eventService.getEventForOrganizer(userId, eventId);
+
+		return ResponseEntity.noContent().build();
 
 	}
 
